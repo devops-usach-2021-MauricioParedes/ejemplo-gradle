@@ -1,67 +1,58 @@
    
 pipeline {
-    agent any
-    
-    stages{
-        stage('BuildAndTest'){
-            steps{
-                script{
-                      echo 'BuildAndTest'
-                }
-                
-            }
-            
-        }
-        stage('Sonar'){
-            steps{
-                script{
-                    
-                        echo 'Sonar'
-                    
-                }
-                
-            }
-            
-        }
-        stage('Run') {
-            steps{
 
-            script{
-                echo 'Run'
-                }
-            }
-   
-            
-        }
-        
-        
-        stage('Test'){
-            steps{
-                script{
-                   
-                        echo 'Test'
-                    
-                }
-                
-            }
-            
-        }
-        stage('Nexus'){
-            steps{
-                script{
-                    
-                     echo 'Nexus'
-                    
-                }
-                
-            }
-            
-        }
-        
-          
-        
-    }
+	agent any
 
+	stages{
+		stage('Build & Unit Test'){
+			steps{
+				script{
+				    sh 'env'
+					println "Stage: ${env.STAGE_NAME}"
+				}
+			}
+		}
+		stage('Sonar'){
+			steps{
+				script{
+					println "Stage: ${env.STAGE_NAME}"
+				}
+			}
+		}
+		stage('Run'){
+			steps{
+				script{
+					println "Stage: ${env.STAGE_NAME}"
+				}
+			}
+		}
+		stage('Test'){
+			steps{
+				script{
+					println "Stage: ${env.STAGE_NAME}"
+				}
+			}
+		}
+		stage('Nexus'){
+			steps{
+				script{
+					println "Stage: ${env.STAGE_NAME}"
+				}
+			}
+		}
+	}
 }
-        
-       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
