@@ -27,6 +27,8 @@ pipeline {
 			steps{
 				script{
 					println "Stage: ${env.STAGE_NAME}"
+                    sh "nohup bash gradlew bootRun & "
+                    sleep 40
 				}
 			}
 		}
@@ -34,6 +36,7 @@ pipeline {
 			steps{
 				script{
 					println "Stage: ${env.STAGE_NAME}"
+                    sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
 				}
 			}
 		}
