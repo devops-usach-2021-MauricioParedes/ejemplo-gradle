@@ -1,20 +1,14 @@
-/*
-	forma de invocación de método call:
-	def ejecucion = load 'script.groovy'
-	ejecucion.call()
-*/
-
 def call(){
   
-  stage("Compile Code"){ 
+  stage("Compile"){ 
     
       sh " ./mvnw clean compile -e"
      
 }
-stage('SonarQube analysis') { 
+stage('Sonar') { 
   
       def scannerHome = tool 'sonar-scanner'; 
-      withSonarQubeEnv('sonarqube-server') {
+      withSonarQubeEnv('sonar-server') {
         sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ejemplo-gradle -Dsonar.sources=src -Dsonar.java.binaries=build "
       } 
 
@@ -24,7 +18,7 @@ stage("Test Code"){
   
   sh " ./mvnw clean test -e "
 }
-stage("Jar Code"){ 
+stage("Jar"){ 
   
   sh " ./mvnw clean package -e "
   
@@ -36,16 +30,16 @@ stage('Guardando WAR') {
   
 }
  
-stage("Upload to Nexus"){
+stage("Nexus"){
   
   
-    nexusPublisher nexusInstanceId: 'test_repo', 
+    nexusPublisher nexusInstanceId: 'test-repo', 
     nexusRepositoryId: 'test-repo', 
     packages: [[$class: 'MavenPackage', 
     mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]] }
   
 
-stage("Run Jar"){ 
+stage("Run"){ 
   
     sh "nohup bash mvnw spring-boot:run &" 
     sleep 80
@@ -59,4 +53,3 @@ stage("Testing Application"){
 
 }
 return this;
-
