@@ -1,4 +1,3 @@
-
 pipeline {
 
 	agent any
@@ -12,6 +11,15 @@ pipeline {
 			steps{
 				script{
 					println 'Pipeline'
+					println params.buildTool
+					
+					if(params.buildTool=='gradle'){
+					    println 'Ejecutar gradle'    
+					}
+					else{
+					    println 'Ejecutar maven'
+					}
+					
 				}
 			}
 
@@ -19,6 +27,20 @@ pipeline {
 		
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
