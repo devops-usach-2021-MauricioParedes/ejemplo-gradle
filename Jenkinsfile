@@ -28,7 +28,7 @@ pipeline {
 				script{
 					println "Stage: ${env.STAGE_NAME}"
                     sh "nohup bash gradlew bootRun & "
-                    sleep 40
+                    sleep 80
 				}
 			}
 		}
@@ -40,13 +40,26 @@ pipeline {
 				}
 			}
 		}
-		stage('Nexus'){
-			steps{
-				script{
-					println "Stage: ${env.STAGE_NAME}"
-				}
-			}
-		}
+	    stage('nexus') {
+            steps {
+                nexusPublisher nexusInstanceId: 'test-repo',
+                nexusRepositoryId: 'test-repo',
+                packages: [
+                    [
+                        $class: 'MavenPackage',
+                        mavenAssetList: [
+                            [classifier: '', extension: '', filePath: 'build/libs/DevOpsUsach2020-0.0.1.jar']
+                        ],
+                        mavenCoordinate: [
+                            artifactId: 'DevOpsUsach2020',
+                            groupId: 'com.devopsusach2020',
+                            packaging: 'jar',
+                            version: '0.0.1'
+                        ]
+                    ]
+                ]
+            }
+        }
 	}
 }
 
