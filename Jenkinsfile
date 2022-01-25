@@ -1,6 +1,10 @@
 pipeline {
 
 	agent any
+	
+	environment{
+        STAGE=''
+    }
 
 	parameters {
   		choice choices: ['gradle', 'maven'], description: 'Indicar herramienta de contrucción', name: 'buildTool'
@@ -10,22 +14,34 @@ pipeline {
 		stage('Pipeline'){
 			steps{
 				script{
-					println 'Pipeline'
+					
+                    try{
+                    println 'Pipeline'
 					println params.buildTool
 					
 					if(params.buildTool=='gradle'){
 					    println 'Ejecutar gradle'
 						def ejecucion=load 'gradle.groovy'
-						ejecucion.call()
+                        ejecucion.call()
+						
 					}
 					else{
 					    println 'Ejecutar maven'
 						def ejecucion=load 'maven.groovy'
-						ejecucion.call()
-
+                        ejecucion.call()
+						
 					}
+					slackSend color: 'good', message: "[${env.USER}][${env.JOB_NAME}][${params.buildTool}] Ejecución exitosa"
+                    slackSend color: 'danger', message: "[${env.USER}][${env.JOB_NAME}][${params.buildTool}] Ejecución fallida en stage [${env.STAGE}]"
+                    }
+                    catch(Exception e){
+                        slackSend color: 'danger', message: "[${env.USER}][${env.JOB_NAME}][${params.buildTool}] Ejecución fallida en stage [STAGE]"
 
-					
+                    }
+
+
+
+
 				}
 			}
 
@@ -33,20 +49,6 @@ pipeline {
 		
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
