@@ -36,7 +36,7 @@ pipeline {
                     }
                     catch(Exception e){
                         slackSend color: 'danger', message: "[${env.USER}][${env.JOB_NAME}][${params.buildTool}] Ejecución fallida en stage [${STAGE}]"
-
+						error "Ejecución fallida en stage ${STAGE}"
                     }
 
 
