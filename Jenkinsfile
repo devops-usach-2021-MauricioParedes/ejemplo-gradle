@@ -1,0 +1,4 @@
+ library 'pipeline-devops'
+
+ejecucion()
+
