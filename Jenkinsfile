@@ -1,16 +1,5 @@
 library 'pipeline-devops'
-
 ejecucion()
-
-
-
-
-
-
-
-
-
-
 
 
 
